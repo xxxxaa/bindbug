@@ -1,0 +1,62 @@
+
+div{
+    display: block;
+}
+
+input{
+    display: block;
+}
+ul{
+    display: block;
+    list-style: none;
+    margin: 0;
+}
+
+
+.article-list{
+    padding-top: 10px;
+    margin: auto;
+}
+
+.article-header{
+    margin: auto;
+    text-align: center;
+    padding-bottom: 10px;
+    float: left;
+}
+
+.tags{
+    float: left;
+    margin: 5px 5px 5px 0px;
+
+}
+
+
+
+a{
+    text-decoration: none;
+    color: black;
+}
+
+.article-title{
+    font-size: 25px;
+    border: 2px;
+}
+
+.article-tag{
+    height: inherit;
+    margin: auto;
+    float: left;
+}
+
+.date{
+    margin-top: 5px;
+}
+.article-preview{
+    padding: 10px;
+    border: .1em #adadad solid;
+    /*border-color: ;*/
+    border-radius: 5px;
+}
+
+

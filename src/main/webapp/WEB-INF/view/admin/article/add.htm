@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑文章</title>
+    <link rel="stylesheet" type="text/css" href="/node_modules/normalize.css/normalize.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/edit.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/head.css"/>
+    <script src="/node_modules/jquery/dist/jquery.js"></script>
+    <script src="/node_modules/markdown/lib/markdown.js"></script>
+    <script src="/js/addArticle.js"></script>
+</head>
+<body>
+
+<div class="header">
+    <nav>
+        <div class="logo"><a href="/index">BindBug</a></div>
+        <div class="header">
+            <ul>
+                <li><a href="#">其他</a> </li>
+                <li><a href="#">工具</a> </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<div class="edit-area">
+    <input id="article-title" class="article-title" type="text" size="30" placeholder="请输入文章标题"/>
+    <textarea id="text-input" oninput="this.editor.update()" placeholder="请输入正文"></textarea>
+    <div id="preview"> </div>
+    <script>
+        function Editor(input, preview) {
+            this.update = function () {
+                preview.innerHTML = markdown.toHTML(input.value);
+            };
+            input.editor = this;
+            this.update();
+        }
+        var $ = function (id) { return document.getElementById(id); };
+        new Editor($("text-input"), $("preview"));
+
+        var xmlHttp = createXMLHttpRequest();
+        function articlesubmit(){
+            var content = document.getElementById("preview").innerHTML;
+            var title = document.getElementById("article-title").value;
+            var markdownContent = document.getElementById("text-input").innerHTML;
+            if(title.length == 0){
+                alert("请填写文章标题");
+                return;
+            }
+            var url = "addArticle.json"
+
+            xmlHttp.open("POST", url, true);
+            xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;");
+            xmlHttp.send("content=" + content + "&title=" + title) + "&markdownContent=" + markdownContent;
+            xmlHttp.onreadystatechange = callback;
+
+//            alert(content);
+        }
+        function callback(){
+            var data = xmlHttp.responseText;
+            if(data == "success"){
+                window.location.href="/";
+            }else if(data == "failed"){
+                alert("提交失败,请重新提交!")
+            }
+        }
+    </script>
+</div>
+<div class="submitbutton-area">
+    <button class="submit-button" onclick="articlesubmit()" value="提交">提交</button>
+</div>
+<div class="footer"></div>
+
+</body>
+</html>

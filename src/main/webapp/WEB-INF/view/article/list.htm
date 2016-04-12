@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <title>BindBug首页</title>
+    <link rel="stylesheet" type="text/css" href="/node_modules/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/list.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/head.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+    <script type="javascript" src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<#include "/common/navbar.html"/>
+<div class="container">
+    <div class="row">
+        <div class="article-list col-lg-8">
+
+            <ul class="media-list">
+                <#if (articlePage.totalCount > 0) >
+                    <#list articlePage.result as article>
+                        <div class="article-preview">
+                            <li class="media">
+                                <div class="media-body">
+                                    <h4 class="media-heading">${article.title}</h4>
+                                    ${article.content}
+                                </div>
+                                <div><a href="article/${article.id}">阅读全文</a></div>
+
+                                <div class="tags">
+                                    <a href="#"><span class="label label-info"> 技术管理</span></a>
+                                    <a href="#"><span class="label label-info">java技术</span></a>
+                                    </div>
+                                    <!--<div class="article-score">-->
+                                    <!--<span>35人打了分</span>-->
+                                    <!--<span>4.5分</span>-->
+                                    <!--</div>-->
+                            </li>
+                        </div>
+                    </#list>
+                </#if>
+            </ul>
+            <div class="page-info"></div>
+            <div class="other-list"></div>
+        </div>
+        <!--<div class="category col-lg-4">-->
+            <!--<div class="panel panel-default">-->
+                <!--&lt;!&ndash;<div class="panel-heading">分类</div>&ndash;&gt;-->
+                <!--<ul class="list-group">-->
+                    <!--<li class="list-group-item">-->
+                        <!--<div class="tejia-item">-->
+                            <!--<dl>-->
+                                <!--<dt></dt>-->
+                                <!--<dd><a href="/product/1">这个商品信息</a></dd>-->
+                                <!--<dd><span>￥3.9</span></dd>-->
+                            <!--</dl>-->
+                        <!--</div>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="footer"></div>
+    </div>
+</div>
+
+</body>
+</html>

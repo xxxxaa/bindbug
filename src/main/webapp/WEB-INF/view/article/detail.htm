@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <title>${article.title}</title>
+    <!--<link rel="stylesheet" type="text/css" href="node_modules/normalize.css/normalize.css"/>-->
+    <!--<link rel="stylesheet" type="text/css" href="css/detail.css"/>-->
+    <link rel="stylesheet" type="text/css" href="/css/detail.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/head.css"/>
+    <link rel="stylesheet" type="text/css" href="/node_modules/normalize.css/normalize.css"/>
+</head>
+<body>
+
+<div class="header">
+    <nav>
+        <div class="logo"><a href="#">Dylan的博客</a></div>
+        <div class="header">
+            <ul>
+                <li><a href="#">其他</a> </li>
+                <li><a href="#">工具</a> </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<div class="article">
+    <div class="article-head">
+        <span class="article-title">${article.title}</span>
+        <div class="article-info">
+            <span class="article-date">${article.createTime?string("yyyy-MM-dd")}</span>
+        </div>
+    </div>
+    <div class="article-content">${article.content}</div>
+    <div class="article-other"></div>
+</div>
+
+</body>
+</html>
