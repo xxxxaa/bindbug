@@ -1,10 +1,8 @@
 package com.bindbug.controller;
 
-import com.bindbug.model.Article;
-import com.bindbug.model.ArticleExample;
-import com.bindbug.model.Tag;
-import com.bindbug.model.User;
+import com.bindbug.model.*;
 import com.bindbug.service.ArticleService;
+import com.bindbug.service.ArticleTagService;
 import com.bindbug.service.TagService;
 import com.bindbug.util.Page;
 import org.slf4j.Logger;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -35,13 +34,21 @@ public class ArticleController {
     @Resource
     private TagService tagService;
 
-    @RequestMapping(value = "/admin/addArticle.json")
+    @Resource
+    private ArticleTagService articleTagService;
+
+    @RequestMapping(value = "/admin/article/addArticle.json")
     @ResponseBody
-    public String addArticle(Model model, String content, String title, String markdownContent, HttpSession session){
+    public String addArticle(@RequestParam(value = "markdownContent", required = true, defaultValue = "")String markdownContent,
+                             @RequestParam(value = "title", required = true, defaultValue = "")String title,
+                             @RequestParam(value = "content", required = true, defaultValue = "")String content,
+                             @RequestParam("tagId[]") List<Integer> tagIdList, HttpSession session){
+
         User user = (User)session.getAttribute("loginUser");
-        Article article = new Article();
+        ArticleWithBLOBs article = new ArticleWithBLOBs();
         article.setUserId(user.getId());
         article.setContent(content);
+        article.setMarkdownContent(markdownContent);
         article.setTitle(title);
         article.setCreateTime(new Date());
         article.setReadCount(0);
@@ -50,6 +57,9 @@ public class ArticleController {
         article.setIsDel(false);
         try{
             articleService.addArticle(article);
+            for(Integer tagId : tagIdList){
+                articleTagService.insertArticleTag(article.getId(), tagId);
+            }
             return "success";
         }catch (Exception e){
             e.printStackTrace();
@@ -95,6 +105,7 @@ public class ArticleController {
                                    @RequestParam(value = "id",required = true) Integer id){
         try{
             Article article = articleService.findArticleById(id);
+            model.addAttribute("article", article);
         }catch (Exception e){
             logger.error("查询失败", e);
         }
@@ -103,9 +114,10 @@ public class ArticleController {
 
 
     @RequestMapping(value = "/admin/article/add")
-    public String addArticle(){
-        return "/admin/article/markdownedit";
-//        return "admin/article/edit";
+    public String addArticle(Model model){
+        List<Tag> tagList = this.tagService.findTags();
+        model.addAttribute("tags", tagList);
+        return "admin/article/add";
     }
 
 }

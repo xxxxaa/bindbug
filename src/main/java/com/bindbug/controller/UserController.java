@@ -45,7 +45,7 @@ public class UserController {
 
     @RequestMapping(value = "edit")
     public String editArticle(){
-        return "/admin/markdownedit";
+        return "/admin/article/edit";
     }
 
 }

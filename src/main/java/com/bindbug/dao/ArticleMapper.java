@@ -2,6 +2,7 @@ package com.bindbug.dao;
 
 import com.bindbug.model.Article;
 import com.bindbug.model.ArticleExample;
+import com.bindbug.model.ArticleWithBLOBs;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -13,25 +14,25 @@ public interface ArticleMapper {
 
     int deleteByPrimaryKey(Integer id);
 
-    int insert(Article record);
+    int insert(ArticleWithBLOBs record);
 
-    int insertSelective(Article record);
+    int insertSelective(ArticleWithBLOBs record);
 
-    List<Article> selectByExampleWithBLOBs(ArticleExample example);
+    List<ArticleWithBLOBs> selectByExampleWithBLOBs(ArticleExample example);
 
     List<Article> selectByExample(ArticleExample example);
 
-    Article selectByPrimaryKey(Integer id);
+    ArticleWithBLOBs selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") Article record, @Param("example") ArticleExample example);
+    int updateByExampleSelective(@Param("record") ArticleWithBLOBs record, @Param("example") ArticleExample example);
 
-    int updateByExampleWithBLOBs(@Param("record") Article record, @Param("example") ArticleExample example);
+    int updateByExampleWithBLOBs(@Param("record") ArticleWithBLOBs record, @Param("example") ArticleExample example);
 
     int updateByExample(@Param("record") Article record, @Param("example") ArticleExample example);
 
-    int updateByPrimaryKeySelective(Article record);
+    int updateByPrimaryKeySelective(ArticleWithBLOBs record);
 
-    int updateByPrimaryKeyWithBLOBs(Article record);
+    int updateByPrimaryKeyWithBLOBs(ArticleWithBLOBs record);
 
     int updateByPrimaryKey(Article record);
 }

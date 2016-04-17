@@ -654,6 +654,66 @@ public class ArticleExample {
             addCriterion("is_del not between", value1, value2, "isDel");
             return (Criteria) this;
         }
+
+        public Criteria andIsPublishIsNull() {
+            addCriterion("is_publish is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPublishIsNotNull() {
+            addCriterion("is_publish is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPublishEqualTo(Boolean value) {
+            addCriterion("is_publish =", value, "isPublish");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPublishNotEqualTo(Boolean value) {
+            addCriterion("is_publish <>", value, "isPublish");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPublishGreaterThan(Boolean value) {
+            addCriterion("is_publish >", value, "isPublish");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPublishGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("is_publish >=", value, "isPublish");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPublishLessThan(Boolean value) {
+            addCriterion("is_publish <", value, "isPublish");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPublishLessThanOrEqualTo(Boolean value) {
+            addCriterion("is_publish <=", value, "isPublish");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPublishIn(List<Boolean> values) {
+            addCriterion("is_publish in", values, "isPublish");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPublishNotIn(List<Boolean> values) {
+            addCriterion("is_publish not in", values, "isPublish");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPublishBetween(Boolean value1, Boolean value2) {
+            addCriterion("is_publish between", value1, value2, "isPublish");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPublishNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("is_publish not between", value1, value2, "isPublish");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

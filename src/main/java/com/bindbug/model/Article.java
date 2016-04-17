@@ -21,9 +21,7 @@ public class Article {
 
     private Boolean isDel;
 
-    private String content;
-
-    private String markdownContent;
+    private Boolean isPublish;
 
     public Integer getId() {
         return id;
@@ -97,19 +95,11 @@ public class Article {
         this.isDel = isDel;
     }
 
-    public String getContent() {
-        return content;
+    public Boolean getIsPublish() {
+        return isPublish;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getMarkdownContent() {
-        return markdownContent;
-    }
-
-    public void setMarkdownContent(String markdownContent) {
-        this.markdownContent = markdownContent;
+    public void setIsPublish(Boolean isPublish) {
+        this.isPublish = isPublish;
     }
 }
