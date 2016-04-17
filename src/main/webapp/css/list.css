@@ -57,6 +57,10 @@ a{
     border: .1em #adadad solid;
     /*border-color: ;*/
     border-radius: 5px;
+    margin-top: 10px;
+}
+.article-link{
+    margin: 5px;
 }
 
 

@@ -11,9 +11,11 @@
     <result column="comment_count" property="commentCount" jdbcType="INTEGER" />
     <result column="score" property="score" jdbcType="REAL" />
     <result column="is_del" property="isDel" jdbcType="BIT" />
+    <result column="is_publish" property="isPublish" jdbcType="BIT" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.bindbug.model.Article" extends="BaseResultMap" >
+  <resultMap id="ResultMapWithBLOBs" type="com.bindbug.model.ArticleWithBLOBs" extends="BaseResultMap" >
     <result column="content" property="content" jdbcType="LONGVARCHAR" />
+    <result column="markdown_content" property="markdownContent" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -74,10 +76,11 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, title, user_id, create_time, update_time, read_count, comment_count, score, is_del
+    id, title, user_id, create_time, update_time, read_count, comment_count, score, is_del, 
+    is_publish
   </sql>
   <sql id="Blob_Column_List" >
-    content
+    content, markdown_content
   </sql>
   <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.bindbug.model.ArticleExample" >
     select
@@ -127,22 +130,25 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.bindbug.model.Article" >
-    insert into article (id, title, user_id, 
-      create_time, update_time, read_count, 
-      comment_count, score, is_del, 
-      content)
-    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{readCount,jdbcType=INTEGER}, 
-      #{commentCount,jdbcType=INTEGER}, #{score,jdbcType=REAL}, #{isDel,jdbcType=BIT}, 
-      #{content,jdbcType=LONGVARCHAR})
+  <insert id="insert" parameterType="com.bindbug.model.ArticleWithBLOBs" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into article (title, user_id, create_time, 
+      update_time, read_count, comment_count, 
+      score, is_del, is_publish, content, 
+      markdown_content)
+    values (#{title,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{readCount,jdbcType=INTEGER}, #{commentCount,jdbcType=INTEGER}, 
+      #{score,jdbcType=REAL}, #{isDel,jdbcType=BIT}, #{isPublish,jdbcType=BIT}, #{content,jdbcType=LONGVARCHAR}, 
+      #{markdownContent,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.bindbug.model.Article" >
+  <insert id="insertSelective" parameterType="com.bindbug.model.ArticleWithBLOBs" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into article
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
       <if test="title != null" >
         title,
       </if>
@@ -167,14 +173,17 @@
       <if test="isDel != null" >
         is_del,
       </if>
+      <if test="isPublish != null" >
+        is_publish,
+      </if>
       <if test="content != null" >
         content,
       </if>
+      <if test="markdownContent != null" >
+        markdown_content,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="title != null" >
         #{title,jdbcType=VARCHAR},
       </if>
@@ -199,8 +208,14 @@
       <if test="isDel != null" >
         #{isDel,jdbcType=BIT},
       </if>
+      <if test="isPublish != null" >
+        #{isPublish,jdbcType=BIT},
+      </if>
       <if test="content != null" >
         #{content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="markdownContent != null" >
+        #{markdownContent,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -240,8 +255,14 @@
       <if test="record.isDel != null" >
         is_del = #{record.isDel,jdbcType=BIT},
       </if>
+      <if test="record.isPublish != null" >
+        is_publish = #{record.isPublish,jdbcType=BIT},
+      </if>
       <if test="record.content != null" >
         content = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.markdownContent != null" >
+        markdown_content = #{record.markdownContent,jdbcType=LONGVARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -259,7 +280,9 @@
       comment_count = #{record.commentCount,jdbcType=INTEGER},
       score = #{record.score,jdbcType=REAL},
       is_del = #{record.isDel,jdbcType=BIT},
-      content = #{record.content,jdbcType=LONGVARCHAR}
+      is_publish = #{record.isPublish,jdbcType=BIT},
+      content = #{record.content,jdbcType=LONGVARCHAR},
+      markdown_content = #{record.markdownContent,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -274,12 +297,13 @@
       read_count = #{record.readCount,jdbcType=INTEGER},
       comment_count = #{record.commentCount,jdbcType=INTEGER},
       score = #{record.score,jdbcType=REAL},
-      is_del = #{record.isDel,jdbcType=BIT}
+      is_del = #{record.isDel,jdbcType=BIT},
+      is_publish = #{record.isPublish,jdbcType=BIT}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.bindbug.model.Article" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.bindbug.model.ArticleWithBLOBs" >
     update article
     <set >
       <if test="title != null" >
@@ -306,13 +330,19 @@
       <if test="isDel != null" >
         is_del = #{isDel,jdbcType=BIT},
       </if>
+      <if test="isPublish != null" >
+        is_publish = #{isPublish,jdbcType=BIT},
+      </if>
       <if test="content != null" >
         content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="markdownContent != null" >
+        markdown_content = #{markdownContent,jdbcType=LONGVARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.bindbug.model.Article" >
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.bindbug.model.ArticleWithBLOBs" >
     update article
     set title = #{title,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=INTEGER},
@@ -322,7 +352,9 @@
       comment_count = #{commentCount,jdbcType=INTEGER},
       score = #{score,jdbcType=REAL},
       is_del = #{isDel,jdbcType=BIT},
-      content = #{content,jdbcType=LONGVARCHAR}
+      is_publish = #{isPublish,jdbcType=BIT},
+      content = #{content,jdbcType=LONGVARCHAR},
+      markdown_content = #{markdownContent,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.bindbug.model.Article" >
@@ -334,7 +366,8 @@
       read_count = #{readCount,jdbcType=INTEGER},
       comment_count = #{commentCount,jdbcType=INTEGER},
       score = #{score,jdbcType=REAL},
-      is_del = #{isDel,jdbcType=BIT}
+      is_del = #{isDel,jdbcType=BIT},
+      is_publish = #{isPublish,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

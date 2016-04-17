@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class ArticleTo extends Article{
     private List<Tag> tagList;
+    private String content;
 
     public List<Tag> getTagList() {
         return tagList;
@@ -18,5 +19,13 @@ public class ArticleTo extends Article{
 
     public void setTagList(List<Tag> tagList) {
         this.tagList = tagList;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

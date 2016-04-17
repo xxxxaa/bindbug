@@ -2,10 +2,13 @@ package com.bindbug.service;
 
 import com.bindbug.dao.ArticleTagMapper;
 import com.bindbug.dao.TagMapper;
+import com.bindbug.dic.TagSort;
 import com.bindbug.model.ArticleTag;
 import com.bindbug.model.ArticleTagExample;
 import com.bindbug.model.Tag;
 import com.bindbug.model.TagExample;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -18,23 +21,25 @@ import java.util.List;
 @Service
 public class TagService {
 
+    Logger logger = LoggerFactory.getLogger(TagService.class);
+
     @Resource
     private TagMapper tagMapper;
 
     @Resource
     private ArticleTagMapper articleTagMapper;
 
-    public Boolean addTag(Tag tag){
+    public Tag addTag(Tag tag){
         try {
             int row = tagMapper.insert(tag);
             if(row > 0){
-                return true;
+                return tag;
             }else{
-                return false;
+                return null;
             }
         }catch (Exception e){
-            e.printStackTrace();
-            return false;
+            logger.error("添加tag失败,tag内容:{},异常:{}", tag.getContent(), e);
+            return null;
         }
     }
 
@@ -49,8 +54,16 @@ public class TagService {
         }
     }
 
+
+    public List<Tag> findTags(){
+        TagExample tagExample = new TagExample();
+        tagExample.setOrderByClause(TagSort.TAG_CREATETIME_DESC.getOrderField());
+        List<Tag> tagList = this.tagMapper.selectByExample(tagExample);
+        return tagList;
+    }
+
     public List<Tag> findTagByArticleId(Integer articleId){
-        List<Tag> tagList = new ArrayList<Tag>();
+        List<Tag> tagList = new ArrayList<>();
         ArticleTagExample articleTagExample = new ArticleTagExample();
         ArticleTagExample.Criteria criteria = articleTagExample.createCriteria();
         criteria.andArticleIdEqualTo(articleId);

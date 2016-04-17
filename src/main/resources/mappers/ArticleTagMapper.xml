@@ -98,17 +98,18 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.bindbug.model.ArticleTag" >
-    insert into article_tag (id, article_id, tag_id
-      )
-    values (#{id,jdbcType=INTEGER}, #{articleId,jdbcType=INTEGER}, #{tagId,jdbcType=INTEGER}
-      )
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into article_tag (article_id, tag_id)
+    values (#{articleId,jdbcType=INTEGER}, #{tagId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.bindbug.model.ArticleTag" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into article_tag
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
       <if test="articleId != null" >
         article_id,
       </if>
@@ -117,9 +118,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="articleId != null" >
         #{articleId,jdbcType=INTEGER},
       </if>

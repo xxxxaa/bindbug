@@ -1,77 +1,98 @@
 <!DOCTYPE html>
-<html lang="zh_CN">
+<html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <title>编辑文章</title>
-    <link rel="stylesheet" type="text/css" href="/node_modules/normalize.css/normalize.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+    <meta charset="utf-8" />
+    <title>Simple example - Editor.md examples</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/editormd.min.css" />
     <link rel="stylesheet" type="text/css" href="/css/edit.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/head.css"/>
-    <script src="/node_modules/jquery/dist/jquery.js"></script>
-    <script src="/node_modules/markdown/lib/markdown.js"></script>
-    <script src="/js/addArticle.js"></script>
+    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/common/jqPaginator.min.js"></script>
+    <script type="text/javascript" src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 </head>
 <body>
-
-<div class="header">
-    <nav>
-        <div class="logo"><a href="/index">Dylan的博客</a></div>
-        <div class="header">
-            <ul>
-                <li><a href="#">其他</a> </li>
-                <li><a href="#">工具</a> </li>
+<div id="layout">
+    <div class="title-area row">
+        <div class="col-lg-8">
+            <input id="article-title" class="article-title" type="text" size="30" placeholder="请输入文章标题"/>
+        </div>
+        <div class="submitbutton-area col-lg-4">
+            <button class="submit-button" onclick="articlesubmit()" value="提交">提交</button>
+        </div>
+    </div>
+    <div class="tag-area row">
+        <div class=" btn-group col-lg-4">
+            <button type="button" class="btn btn-default">Action</button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li><a href="#">Separated link</a></li>
             </ul>
         </div>
-    </nav>
+        <div class="tags col-lg-8">
+            <span class="label label-info"> 技术管理</span>
+            <span class="label label-info">java技术</span>
+        </div>
+    </div>
+
+    <div id="test-editormd">
+    <textarea style="display:none;"></textarea>
+    </div>
+
 </div>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/js/editormd.min.js"></script>
+<script type="text/javascript">
+    var testEditor;
 
-<div class="edit-area">
-    <input id="article-title" class="article-title" type="text" size="30" value="${articleInfo.title!""}"/>
-    <textarea id="text-input" oninput="this.editor.update()" placeholder="${articleInfo.markdownContent!""}"></textarea>
-    <div id="preview"> </div>
-    <script>
-        function Editor(input, preview) {
-            this.update = function () {
-                preview.innerHTML = markdown.toHTML(input.value);
-            };
-            input.editor = this;
-            this.update();
+    $(function() {
+        testEditor = editormd("test-editormd", {
+            width   : "90%",
+            height  : 640,
+            syncScrolling : "single",
+            path    : "/js/lib/"
+        });
+
+        /*
+         // or
+         testEditor = editormd({
+         id      : "test-editormd",
+         width   : "90%",
+         height  : 640,
+         path    : "../lib/"
+         });
+         */
+    });
+
+
+    function articlesubmit(){
+        var content = testEditor.getHTML();
+        var title = document.getElementById("article-title").value;
+        var markdownContent = testEditor.getMarkdown(); ;
+        if(title.length == 0){
+            alert("请填写文章标题");
+            return;
         }
-        var $ = function (id) { return document.getElementById(id); };
-        new Editor($("text-input"), $("preview"));
-
-        var xmlHttp = createXMLHttpRequest();
-        function articlesubmit(){
-            var content = document.getElementById("preview").innerHTML;
-            var title = document.getElementById("article-title").value;
-            var markdownContent = document.getElementById("text-input").innerHTML;
-            if(title.length == 0){
-                alert("请填写文章标题");
-                return;
-            }
-            var url = "updateArticle.json"
-
-            xmlHttp.open("POST", url, true);
-            xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;");
-            xmlHttp.send("content=" + content + "&title=" + title) + "&markdownContent=" + markdownContent + "&id=";
-            xmlHttp.onreadystatechange = callback;
-
-//            alert(content);
-        }
-        function callback(){
-            var data = xmlHttp.responseText;
-            if(data == "success"){
-                window.location.href="/admin/article/list";
-            }else if(data == "failed"){
-                alert("提交失败,请重新提交!")
-            }
-        }
-    </script>
-</div>
-<div class="submitbutton-area">
-    <button class="submit-button" onclick="articlesubmit()" value="提交">提交</button>
-</div>
-<div class="footer"></div>
-
+        $.post("addArticle.json",
+                {
+                    content:content,
+                    title: title,
+                    markdownContent: markdownContent
+                },
+                function(data, status){
+                    if(data.state == 1){
+                        window.location.href="/";
+                    }else{
+                        alert('文章添加失败,请稍后重试')
+                    }
+                });
+    }
+</script>
 </body>
 </html>

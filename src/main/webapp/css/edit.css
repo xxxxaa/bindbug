@@ -4,26 +4,7 @@
     font-size: 30px;
 }
 
-.edit-area{
-    padding-top: 30px;
-    margin: auto;
-    width: 90%;
-    height: 650px;
-}
-
-#text-input{
-    width: 45%;
-    height: 600px;
-    float: left;
-
-}
-#preview{
-    width: 50%;
-    float: right;
-}
-
 .submitbutton-area{
-    margin: 50px auto;
     width: 100px;
     height:50px;
 }
@@ -45,11 +26,18 @@
     cursor: pointer;
 }
 
-.title-area{
-    width: 90%;
-    margin: auto;
-}
 .tag-area{
-    width: 90%;
-    margin: auto;
+    margin-bottom: 20px;
+    padding: 20px;
+}
+.tag{
+    margin: 5px;
+}
+.x-tag{
+    margin: 2px;
+    padding: 3px;
+    background: red;
+}
+.select-tag{
+    padding-left: 5px;
 }

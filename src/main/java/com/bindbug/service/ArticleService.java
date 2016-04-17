@@ -1,5 +1,6 @@
 package com.bindbug.service;
 
+import com.bindbug.model.ArticleWithBLOBs;
 import com.github.pagehelper.PageHelper;
 import com.bindbug.dao.ArticleMapper;
 import com.bindbug.model.Article;
@@ -30,12 +31,12 @@ public class ArticleService {
         return articleList;
     }
 
-    public List<Article> findArticle(Integer pageNum, Integer pageSize, String orderField, Boolean isDel){
+    public List<ArticleWithBLOBs> findArticle(Integer pageNum, Integer pageSize, String orderField, Boolean isDel){
         ArticleExample articleExample = new ArticleExample();
         articleExample.createCriteria().andIsDelEqualTo(isDel);
         articleExample.setOrderByClause(orderField);
         PageHelper.startPage(pageNum, pageSize);
-        List<Article> articleList = articleMapper.selectByExampleWithBLOBs(articleExample);
+        List<ArticleWithBLOBs> articleList = articleMapper.selectByExampleWithBLOBs(articleExample);
         return articleList;
     }
 
@@ -82,8 +83,8 @@ public class ArticleService {
         return count;
     }
 
-    public void addArticle(Article article){
-        articleMapper.insert(article);
+    public void addArticle(ArticleWithBLOBs articleWithBLOBs){
+        articleMapper.insert(articleWithBLOBs);
     }
 
     public Article findArticleById(Integer id){
