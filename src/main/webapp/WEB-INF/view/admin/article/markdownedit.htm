@@ -13,28 +13,38 @@
 </head>
 <body>
 <div id="layout">
-    <div class="title-area">
-        <input id="article-title" class="article-title" type="text" size="30" placeholder="请输入文章标题"/>
+    <div class="title-area row">
+        <div class="col-lg-8">
+            <input id="article-title" class="article-title" type="text" size="30" placeholder="请输入文章标题"/>
+        </div>
+        <div class="submitbutton-area col-lg-4">
+            <button class="submit-button" onclick="articlesubmit()" value="提交">提交</button>
+        </div>
     </div>
+    <div class="tag-area row">
+        <div class=" btn-group col-lg-4">
+            <button type="button" class="btn btn-default">Action</button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li><a href="#">Separated link</a></li>
+            </ul>
+        </div>
+        <div class="tags col-lg-8">
+            <span class="label label-info"> 技术管理</span>
+            <span class="label label-info">java技术</span>
+        </div>
+    </div>
+
     <div id="test-editormd">
     <textarea style="display:none;"></textarea>
     </div>
-    <div class="tag-area btn-group">
-        <button type="button" class="btn btn-default">Action</button>
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="caret"></span>
-            <span class="sr-only">Toggle Dropdown</span>
-        </button>
-        <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li><a href="#">Separated link</a></li>
-        </ul>
-    </div>
-    <div class="submitbutton-area">
-        <button class="submit-button" onclick="articlesubmit()" value="提交">提交</button>
-    </div>
+
 </div>
 <script src="/node_modules/jquery/dist/jquery.min.js"></script>
 <script src="/js/editormd.min.js"></script>
