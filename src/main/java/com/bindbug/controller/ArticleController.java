@@ -55,6 +55,7 @@ public class ArticleController {
         article.setScore(0F);
         article.setCommentCount(0);
         article.setIsDel(false);
+        article.setIsPublish(true);
         try{
             articleService.addArticle(article);
             for(Integer tagId : tagIdList){

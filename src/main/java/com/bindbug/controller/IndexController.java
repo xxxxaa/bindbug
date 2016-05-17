@@ -32,6 +32,7 @@ public class IndexController {
     private TagService tagService;
 
     @RequestMapping(value = "/")
+
     public String index(Model model){
         try {
             ArticleExample articleExample = new ArticleExample();
