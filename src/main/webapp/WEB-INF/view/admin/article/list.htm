@@ -32,13 +32,13 @@
             <tbody>
             <#if (articlePage.totalCount > 0) >
                 <#list articlePage.result as articleInfo>
-                    <tr id="$!{articleInfo.id}">
+                    <tr id="${articleInfo.id}">
                         <td>${articleInfo.id}</td>
                         <td>${articleInfo.title}</td>
                         <td>${(articleInfo.createTime?string("yyyy-MM-dd HH:mm:ss"))!""}</td>
                         <td>${(articleInfo.updateTime?string("yyyy-MM-dd HH:mm:ss"))!""}</td>
-                        <td><a class="btn btn-default btn-primary" href="admin/article/edit/${articleInfo.id}" role="button">编辑</a></td>
-                        <td><button class="btn btn-default btn-primary" onclick="removeUser('${(articleInfo.id)}')">移除</button></td>
+                        <td><a class="btn btn-default btn-primary" href="/admin/article/preEdit/${articleInfo.id}" role="button">编辑</a></td>
+                        <td><button class="btn btn-default btn-primary" onclick="removeArticle('${(articleInfo.id)}')">移除</button></td>
                     </tr>
                 </#list>
             </#if>
@@ -69,23 +69,22 @@
             page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
             onPageChange: function (num, type) {
                 if (num != page_no) {
-                    location.href="/admin/article/list.htm?pageNo=" + num + "&pageSize=20&companyId=" + company_id;
+                    location.href="/admin/article/list.htm?pageNo=" + num + "&pageSize=20";
                 }
             }
         });
     </script>
     <script type="text/javascript">
-        function removeUser(memberId){
-//			var memberId = $(this).parent().attr("id");
-            var companyId = _Pagination.data('company-id');
-            $.post("/company/removeMember.json",
+        function removeArticle(articleId){
+
+
+            $.post("/admin/article/removeArticle.json",
                     {
-                        companyId:companyId,
-                        memberId: memberId
+                        articleId:articleId,
                     },
                     function(data, status){
                         if(data.state == 1){
-                            $("#" + memberId).remove();
+                            $("#" + articleId).remove();
                         }else{
                             alert('移除失败,请稍后重试')
                         }
