@@ -1,5 +1,6 @@
 package com.bindbug.controller;
 
+import com.bindbug.converter.ArticleConverter;
 import com.bindbug.model.Article;
 import com.bindbug.model.ArticleExample;
 import com.bindbug.model.ArticleWithBLOBs;
@@ -29,16 +30,15 @@ public class IndexController {
     private ArticleService articleService;
 
     @Autowired
-    private TagService tagService;
+    private ArticleConverter articleConverter;
+
 
     @RequestMapping(value = "/")
 
     public String index(Model model){
         try {
-            ArticleExample articleExample = new ArticleExample();
-            articleExample.createCriteria();
             List<ArticleWithBLOBs> articleList = articleService.findArticle(0, 10, "create_time", false);
-            List<ArticleTo> articleToList = makeArticleContentShort(articleList);
+            List<ArticleTo> articleToList = articleConverter.makeArticleContentShort(articleList);
             Page<ArticleTo> articlePage = new Page<>();
             articlePage.setPageNo(1);
             articlePage.setPageSize(Page.DEFAULT_PAGE_SIZE);
@@ -54,27 +54,4 @@ public class IndexController {
         }
     }
 
-    private List<ArticleTo> makeArticleContentShort(List<ArticleWithBLOBs> articles){
-        List<ArticleTo> articleToList = new ArrayList<>();
-        for(ArticleWithBLOBs article : articles){
-            ArticleTo articleTo = new ArticleTo();
-            List<Tag> tagList = this.tagService.findTagByArticleId(article.getId());
-            articleTo.setTagList(tagList);
-            articleTo.setId(article.getId());
-            articleTo.setTitle(article.getTitle());
-            articleTo.setCreateTime(article.getCreateTime());
-            articleTo.setUpdateTime(article.getUpdateTime());
-            articleTo.setReadCount(article.getReadCount());
-            articleTo.setCommentCount(article.getCommentCount());
-            articleTo.setScore(article.getScore());
-            articleTo.setIsDel(article.getIsDel());
-            if(article.getContent().length() > 100){
-                articleTo.setContent(article.getContent().substring(0,100));
-            }else{
-                articleTo.setContent(article.getContent());
-            }
-            articleToList.add(articleTo);
-        }
-        return articleToList;
-    }
 }

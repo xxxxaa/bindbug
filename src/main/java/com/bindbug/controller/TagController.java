@@ -28,6 +28,17 @@ public class TagController {
     @RequestMapping(value = "addTag.json")
     @ResponseBody
     public String addTag(@RequestParam(value = "tagContent", required = true, defaultValue = "") String tagContent){
+
+        /**
+         * 判断标签是否已存在,存在则不重复添加
+         */
+        if(tagContent != null && !tagContent.equals("")){
+            Tag tag = this.tagService.findTagByContent(tagContent);
+            if(tag != null){
+                return ViewResult.newInstance().state(201, "标签已存在,不能重复添加").json();
+            }
+        }
+
         Tag tag = new Tag();
         try{
             tag.setContent(tagContent);
