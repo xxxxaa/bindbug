@@ -1,5 +1,6 @@
 package com.bindbug.service;
 
+import com.bindbug.exception.ArticleNotFindException;
 import com.bindbug.model.ArticleWithBLOBs;
 import com.github.pagehelper.PageHelper;
 import com.bindbug.dao.ArticleMapper;
@@ -7,6 +8,7 @@ import com.bindbug.model.Article;
 import com.bindbug.model.ArticleExample;
 import com.bindbug.util.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -90,6 +92,21 @@ public class ArticleService {
     public Article findArticleById(Integer id){
         Article article = articleMapper.selectByPrimaryKey(id);
         return article;
+    }
+
+    /**
+     * 移除文章
+     * @param articleId
+     * @throws ArticleNotFindException
+     */
+    public void removeArticle(Integer articleId) throws ArticleNotFindException {
+        Assert.notNull(articleId, "articleId is not null");
+        Article article = this.articleMapper.selectByPrimaryKey(articleId);
+        if(article == null){
+            throw new ArticleNotFindException();
+        }
+        article.setIsDel(true);
+        this.articleMapper.updateByPrimaryKey(article);
     }
 
 }

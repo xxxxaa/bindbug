@@ -54,6 +54,23 @@ public class TagService {
         }
     }
 
+    /**
+     * 便签内容不重复,根据内容差标签
+     * @param tagContent
+     * @return
+     */
+    public Tag findTagByContent(String tagContent){
+        TagExample tagExample = new TagExample();
+        TagExample.Criteria criteria = tagExample.createCriteria();
+        criteria.andContentEqualTo(tagContent);
+        List<Tag> tagList = this.tagMapper.selectByExample(tagExample);
+        if(tagList != null && tagList.size() > 0){
+            return tagList.get(0);
+        }else{
+            return null;
+        }
+    }
+
 
     public List<Tag> findTags(){
         TagExample tagExample = new TagExample();
