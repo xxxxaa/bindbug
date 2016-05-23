@@ -22,6 +22,9 @@ public class ArticleService {
     @Resource
     private ArticleMapper articleMapper;
 
+    @Resource
+    private ArticleTagService articleTagService;
+
 
     public List<Article> findArticleByPage(Page page, Integer userId){
         ArticleExample articleExample = new ArticleExample();
@@ -85,8 +88,13 @@ public class ArticleService {
         return count;
     }
 
-    public void addArticle(ArticleWithBLOBs articleWithBLOBs){
+    public void addArticle(ArticleWithBLOBs articleWithBLOBs, List<Integer> tagIdList){
         articleMapper.insert(articleWithBLOBs);
+        if(tagIdList != null && tagIdList.size() > 0) {
+            for (Integer tagId : tagIdList) {
+                articleTagService.insertArticleTag(articleWithBLOBs.getId(), tagId);
+            }
+        }
     }
 
     public Article findArticleById(Integer id){
