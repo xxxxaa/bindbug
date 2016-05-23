@@ -68,6 +68,7 @@
     </dependencies>
     <build>
         <finalName>bindbug-web</finalName>
+        <outputDirectory>${basedir}/src/main/webapp/WEB-INF/classes</outputDirectory>
         <resources>
             <resource>
                 <directory>${basedir}/src/main/resources</directory>
@@ -112,6 +113,14 @@
                 <version>2.17</version>
                 <configuration>
                     <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+            <!-- 更改maven默认的打包目录 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <webappDirectory>${basedir}/src/main/webapp</webappDirectory>
                 </configuration>
             </plugin>
             <!-- 添加脚本 -->

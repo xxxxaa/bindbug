@@ -2,6 +2,8 @@ package com.bindbug.controller;
 
 import com.bindbug.model.User;
 import com.bindbug.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -14,6 +16,9 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping(value = "/admin")
 public class UserController {
+
+
+    private Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Resource
     private UserService userService;
@@ -34,7 +39,6 @@ public class UserController {
         User dbUser = userService.login(loginName, password);
         if(dbUser != null){
             httpSession.setAttribute("loginUser", dbUser);
-//            model.addAttribute("user", dbUser);
             return "/admin/index";
         }else{
             return "/login.html";
