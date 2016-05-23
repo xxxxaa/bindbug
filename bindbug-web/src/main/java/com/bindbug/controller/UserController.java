@@ -30,9 +30,7 @@ public class UserController {
 
 
     @RequestMapping(value = "/doLogin")
-    public String login(User user, HttpSession httpSession){
-        String loginName = user.getLoginName();
-        String password = user.getPassword();
+    public String login(String loginName, String password, HttpSession httpSession){
         User dbUser = userService.login(loginName, password);
         if(dbUser != null){
             httpSession.setAttribute("loginUser", dbUser);
