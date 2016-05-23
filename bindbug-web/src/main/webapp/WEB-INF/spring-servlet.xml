@@ -37,25 +37,4 @@
 			</list>
 		</property>
 	</bean>
-
-
-	<!--
-	<bean id="handlerLoginInterceptor" class="com.bindbug.interceptor.LoginHandlerInterceptor"/>
-	<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
-		<property name="interceptors">
-			<list>
-				<ref bean="handlerLoginInterceptor"/>
-			</list>
-		</property>
-	</bean>
-	-->
-
-	<mvc:interceptors>
-		<!-- 使用bean定义一个Interceptor，直接定义在mvc:interceptors根下面的Interceptor将拦截所有的请求 -->
-		<mvc:interceptor>
-			<mvc:mapping path="/admin/**"/>
-			<!-- 定义在mvc:interceptor下面的表示是对特定的请求才进行拦截的 -->
-			<bean id="handlerLoginInterceptor" class="com.bindbug.interceptor.LoginHandlerInterceptor"/>
-		</mvc:interceptor>
-	</mvc:interceptors>
 </beans>
