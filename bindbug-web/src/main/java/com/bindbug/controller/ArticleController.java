@@ -69,10 +69,7 @@ public class ArticleController extends BaseController{
         article.setIsDel(false);
         article.setIsPublish(isPublish);
         try{
-            articleService.addArticle(article);
-            for(Integer tagId : tagIdList){
-                articleTagService.insertArticleTag(article.getId(), tagId);
-            }
+            articleService.addArticle(article, tagIdList);
             return ViewResult.newInstance().success().json();
         }catch (Exception e){
             e.printStackTrace();
