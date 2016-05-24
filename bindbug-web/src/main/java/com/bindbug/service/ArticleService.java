@@ -97,9 +97,9 @@ public class ArticleService {
         }
     }
 
-    public Article findArticleById(Integer id){
-        Article article = articleMapper.selectByPrimaryKey(id);
-        return article;
+    public ArticleWithBLOBs findArticleById(Integer id){
+        ArticleWithBLOBs articleWithBLOBs = articleMapper.selectByPrimaryKey(id);
+        return articleWithBLOBs;
     }
 
     /**

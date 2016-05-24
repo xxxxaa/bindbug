@@ -33,11 +33,12 @@ public class ArticleConverter {
             articleTo.setCommentCount(article.getCommentCount());
             articleTo.setScore(article.getScore());
             articleTo.setIsDel(article.getIsDel());
-            if(article.getContent().length() > 100){
-                articleTo.setContent(article.getContent().substring(0,100));
-            }else{
-                articleTo.setContent(article.getContent());
-            }
+            articleTo.setContent(article.getContent());
+//            if(article.getContent().length() > 100){
+//                articleTo.setContent(article.getContent().substring(0,100));
+//            }else{
+//                articleTo.setContent(article.getContent());
+//            }
             articleToList.add(articleTo);
         }
         return articleToList;

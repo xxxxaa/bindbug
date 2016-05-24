@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="/css/detail.css"/>
     <link rel="stylesheet" type="text/css" href="/css/head.css"/>
     <link rel="stylesheet" type="text/css" href="/node_modules/normalize.css/normalize.css"/>
+    <script type="text/javascript" src="/node_modules/jquery/dist/jquery.min.js"></script>
 </head>
 <body>
 <#include "/common/navbar.html"/>
@@ -18,10 +19,27 @@
                 <span class="article-date">${article.createTime?string("yyyy-MM-dd")}</span>
             </div>
         </div>
-        <div class="article-content">${article.content}</div>
+            <iframe class="article-content" id="iframepage" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" onLoad="iFrameHeight()" srcdoc="${article.content}"></iframe>
         <div class="article-other"></div>
     </div>
 </div>
+
+
+
+<script type="text/javascript" language="javascript">
+    function iFrameHeight() {
+        var ifm= document.getElementById("iframepage");
+        var subWeb = document.frames ? document.frames["iframepage"].document : ifm.contentDocument;
+        if(ifm != null && subWeb != null) {
+            ifm.height = subWeb.body.scrollHeight;
+            ifm.width = subWeb.body.scrollWidth;
+            $('.article-content').attr("width", ifm.width);
+            $('.article-content').attr("height", ifm.height);
+//            $('.article-content').css({'height', ifm.height, 'width', ifm.width});
+        }
+
+    }
+</script>
 
 </body>
 </html>

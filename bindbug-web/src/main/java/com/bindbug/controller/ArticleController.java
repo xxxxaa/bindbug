@@ -101,12 +101,13 @@ public class ArticleController extends BaseController{
 
     @RequestMapping(value = "/article/{id}")
     public String articleDetail(Model model, @PathVariable Integer id){
-        Article article = articleService.findArticleById(id);
+        ArticleWithBLOBs article = articleService.findArticleById(id);
         List<Tag> tagList = tagService.findTagByArticleId(id);
         //todo 评论列表
 //        List<Comment>
 //        ModelAndView modelAndView = new ModelAndView();
 //        modelAndView.addObject("article", article);
+        article.setContent(article.getContent().replace("\"", "&quot;"));
         model.addAttribute("article", article);
         model.addAttribute("tagList", tagList);
         return "/article/detail";

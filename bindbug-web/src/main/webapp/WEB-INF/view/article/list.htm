@@ -26,15 +26,16 @@
                             <li class="media">
                                 <div class="media-body">
                                     <h4 class="media-heading">${article.title}</h4>
-                                    ${article.content}
+                                    <div class="article-list-content">${article.content}</div>...
                                 </div>
-                                <div class="article-link"><a href="article/${article.id}">阅读全文</a></div>
+
 
                                 <div class="tags">
                                     <#list article.tagList as tag>
                                         <a href="#"><span class="label label-info">${tag.content}</span></a>
                                     </#list>
                                 </div>
+                                <div class="article-link"><a href="article/${article.id}">阅读全文</a></div>
                                     <!--<div class="article-score">-->
                                     <!--<span>35人打了分</span>-->
                                     <!--<span>4.5分</span>-->

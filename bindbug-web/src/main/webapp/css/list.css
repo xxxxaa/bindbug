@@ -31,8 +31,6 @@ ul{
 
 }
 
-
-
 a{
     text-decoration: none;
     color: black;
@@ -55,12 +53,15 @@ a{
 .article-preview{
     padding: 10px;
     border: .1em #adadad solid;
-    /*border-color: ;*/
     border-radius: 5px;
     margin-top: 10px;
 }
 .article-link{
     margin: 5px;
+}
+
+.article-list-content{
+    height: 200px;
 }
 
 
